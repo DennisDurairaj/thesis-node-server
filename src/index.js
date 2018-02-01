@@ -27,8 +27,9 @@ function fibonacci() {
 
 app.get("/api/fibonacci", (req, res) => {
   var result = fibonacci();
-  console.log(result);
-  res.status(200).json({ result });
+  setTimeout(function() {
+    res.status(200).json({ result });
+  }, req.query.users * (Math.random() * (1 - 0.5) + 0.5).toFixed(3));
 });
 
 app.get("/*", (req, res) => {
