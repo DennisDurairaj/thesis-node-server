@@ -3,15 +3,15 @@ import path from "path";
 import bodyParser from "body-parser";
 import cors from "cors";
 import mongo from "mongodb";
-import monk from 'monk';
+import monk from "monk";
 const app = express();
 
-const db = monk("mongodb://dennis:dennis@ds121336.mlab.com:21336/bookstore")
+const db = monk("mongodb://dennis:dennis@ds121336.mlab.com:21336/bookstore");
 
-app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors({ origin: "http://localhost:3000" }));
-app.use(function(req,res,next){
+app.use(function(req, res, next) {
   req.db = db;
   next();
 });
@@ -36,16 +36,16 @@ app.get("/api/fibonacci", (req, res) => {
   var result = fibonacci();
   setTimeout(function() {
     res.status(200).json({ result });
-  }, req.query.users * (Math.random() * (1 - 0.5) + 0.5).toFixed(3));
+  }, req.query.users);
 });
 
 app.get("/api/bookstore", (req, res) => {
   var db = req.db;
-  var collection = db.get('books');
-  collection.find({},{},function(e,docs){
-      res.send(docs);
+  var collection = db.get("books");
+  collection.find({}, {}, function(e, docs) {
+    res.send(docs);
   });
-})
+});
 
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
